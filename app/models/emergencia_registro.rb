@@ -30,6 +30,7 @@ class EmergenciaRegistro < ActiveRecord::Base
 	#callbacks
 	before_create :calculate_values
 	before_update :set_values
+	before_destroy :was_atendido
 	# before_validation :set_values
 	after_update :add_parte_mensual
 
@@ -38,6 +39,13 @@ class EmergenciaRegistro < ActiveRecord::Base
   validates :doctor_id, :presence => { :message => "Debe elejir al doctor de la lista de resultados" }
   validates :atencion, :causa, :diagnostico, :condicion_salir, :presence => true, :on => :update
 	validate :already_ingresado, on: :create
+
+	def was_atendido
+		if self.registrado?
+				errors.add :paciente_id, "No se puede eliminar esta información"
+				return false
+		end
+	end
 
   def already_ingresado
 		paciente = EmergenciaRegistro.where(:paciente_id => self.paciente_id, :registrado => false).last

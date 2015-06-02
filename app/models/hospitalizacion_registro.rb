@@ -37,6 +37,8 @@ class HospitalizacionRegistro < ActiveRecord::Base
 	#callbacks
 	before_update :set_values
 	before_create :build_relations
+  before_destroy :was_atendido, prepend: true
+
 
   #validations
 	validates :doctor_id, :presence => { :message => "Debe elejir al doctor de la lista de resultados" }
@@ -45,6 +47,13 @@ class HospitalizacionRegistro < ActiveRecord::Base
   validate :already_hostipalizado, :on => :create
   validate :validate_fecha_salida, :on => :update
   validate :doctor_not_have_account, :on => :create
+
+  def was_atendido
+    unless self.asignacion_cama.nil?
+      errors.add :paciente_id, "Esta paciente ya ha sido asignado una cama"
+      return false
+    end
+  end
 
   def already_hostipalizado
   	paciente = HospitalizacionRegistro.where(:paciente_id => self.paciente_id, :alta => false).last
