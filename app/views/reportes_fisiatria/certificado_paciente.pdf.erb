@@ -29,24 +29,19 @@
 </div>
 <hr>
 <div class="row">
-  <div class="col-md-2"><strong>APELLIDOS Y NOMBRES:  </strong><span class="text-uppercase"><%= @paciente.cliente.nombre %></span></div>
-  <div class="col-md-8"><strong>H.C:</strong> <%= @paciente.n_hclinica%> <strong>PLANILLA:</strong> <%= @terapia.numero_factura %></div>
+  <div class="col-md-6"><strong>APELLIDOS Y NOMBRES:  </strong><span class="text-uppercase"><%= @paciente.cliente.nombre %></span></div>
+  <div class="col-md-4"><strong>H.C:</strong> <%= @paciente.n_hclinica%> <strong>PLANILLA:</strong> <%= @terapia.numero_factura %></div>
 </div>
 <div><strong>DIAGNOSTICO: </strong><%= @terapia.diagnostico %> </div>
+<br>
 <strong>DIAS DE ASISTENCIA</strong>
-<table class="table">
-  <thead>
-    <tr>
-      <th>Fecha</th>
-      <th>Firma</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @resultados.each do |r|%>
-    <tr>
-      <td><%= local_date(r.fecha, "date") %></td>
-      <td></td>
-    </tr>
-    <% end %>
-  </tbody>
-</table>
+<br>
+<br>
+<div class="row">
+  <% @resultados.each do |r|%>
+  <div class="col-xs-6">
+    <h5><%= local_date(r.fecha, "date") %>                   _________________________</h5>
+  </div>
+<% end %>
+</div>
+
